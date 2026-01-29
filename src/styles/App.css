@@ -1,11 +1,54 @@
 .conteiner {
   width: 100vw;
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
+/*Nav con titulo y user*/
 .Nav {
   width: 100%;
+  height: 5vh;
+  min-height: 26px;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: space-evenly;
   align-items: center;
+  border: red 1px solid;
+  margin-top: 1rem;
+}
+.user {
+  width: 30%;
+  min-width: 170px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  font-size: 1rem;
+}
+.title {
+  width: 30%;
+  min-width: 110px;
+  margin: 0;
+  text-align: center;
+  font-size: 1rem;
+}
+.user .icons-nav {
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  border-radius: 10px;
+  border: green 1px solid;
+  cursor: pointer;
+}
+button {
+  all: unset;
+}
+
+/*Product*/
+.Product {
+  width: 100%;
+  min-height: 60vh;
+  background: aqua;
 }

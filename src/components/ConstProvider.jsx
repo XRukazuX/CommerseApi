@@ -37,7 +37,9 @@ function ConstProvider({ children }) {
   }, []); //Obteniendo Productos
   console.log(Product);
 
-  return <Portcontext.Provider value={{}}>{children}</Portcontext.Provider>;
+  return (
+    <Portcontext.Provider value={{ cart }}>{children}</Portcontext.Provider>
+  );
 }
 
 export default ConstProvider;
