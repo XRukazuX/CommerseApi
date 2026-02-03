@@ -13,14 +13,14 @@ function ConstProvider({ children }) {
   });
   const [user, setUser] = useState({ email: "", password: "" });
   const [cart, setCart] = useState([]);
-  const Compra = (id) => {
+  const Compra = (product) => {
     //Se Comprueba que el contenido no este ya en la lista
     setCart((cart) => {
-      const existe = cart.find((p) => p.id === id);
+      const existe = cart.find((p) => p.id === product.id);
 
       if (existe) {
         return cart.map((p) =>
-          p.id === id
+          p.id === product.id
             ? {
                 ...p,
                 cantidad: p.cantidad + 1,
@@ -92,7 +92,7 @@ function ConstProvider({ children }) {
       setToken(token);
 
       // opcional: persistir
-      localStorage.setItem("token", token);
+      localStorage.setItem("Token", token);
       console.log("Login OK, token guardado");
     } catch (error) {
       console.error("Error POST:", error.response?.data || error.message);
@@ -103,6 +103,7 @@ function ConstProvider({ children }) {
       localStorage.removeItem("Token");
       setRegister({ email: "", password: "" });
       setDateUser({});
+      setCart([]);
     }
   };
   useEffect(() => {
@@ -135,10 +136,11 @@ function ConstProvider({ children }) {
       });
   }, [Token]); // Si se tiene token o obtiene iniciara login y obtendra los datos del usuario y su carrito ya registrado
   console.log(Token);
-  console.log(Product);
   //usuario de prueba esta en mongo, pass :"hola"
   return (
-    <Portcontext.Provider value={{ cart }}>{children}</Portcontext.Provider>
+    <Portcontext.Provider value={{ cart, Product }}>
+      {children}
+    </Portcontext.Provider>
   );
 }
 

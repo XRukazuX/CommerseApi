@@ -52,3 +52,7 @@ button {
   min-height: 60vh;
   background: aqua;
 }
+img {
+  width: 18rem;
+  aspect-ratio: 1 / 1;
+}
