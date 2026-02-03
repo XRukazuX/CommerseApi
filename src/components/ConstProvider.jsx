@@ -13,6 +13,51 @@ function ConstProvider({ children }) {
   });
   const [user, setUser] = useState({ email: "", password: "" });
   const [cart, setCart] = useState([]);
+  const Compra = (id) => {
+    //Se Comprueba que el contenido no este ya en la lista
+    setCart((cart) => {
+      const existe = cart.find((p) => p.id === id);
+
+      if (existe) {
+        return cart.map((p) =>
+          p.id === id
+            ? {
+                ...p,
+                cantidad: p.cantidad + 1,
+                subtotal: (p.cantidad + 1) * p.price,
+              }
+            : p,
+        );
+      }
+
+      return [
+        ...cart,
+        {
+          ...producto,
+          cantidad: 1,
+          subtotal: producto.price,
+        },
+      ];
+    });
+  };
+  const eliminarProducto = (id) => {
+    setCart((cart) => cart.filter((p) => p.id !== id));
+  };
+  const quitarProducto = (id) => {
+    setCart((cart) =>
+      cart
+        .map((p) =>
+          p.id === id
+            ? {
+                ...p,
+                cantidad: p.cantidad - 1,
+                subtotal: (p.cantidad - 1) * p.price,
+              }
+            : p,
+        )
+        .filter((p) => p.cantidad > 0),
+    );
+  };
   const handleRegister = async () => {
     if (!register.username || !register.email || !register.password) {
       console.log("Faltan datos");
@@ -53,6 +98,13 @@ function ConstProvider({ children }) {
       console.error("Error POST:", error.response?.data || error.message);
     }
   }; //Colocar en un boton y solo cargar los datos si existen las cosas de register
+  const loginOff = () => {
+    if (Token) {
+      localStorage.removeItem("Token");
+      setRegister({ email: "", password: "" });
+      setDateUser({});
+    }
+  };
   useEffect(() => {
     axios
       .get("https://apicommerce.onrender.com/api/product")
@@ -83,8 +135,7 @@ function ConstProvider({ children }) {
       });
   }, [Token]); // Si se tiene token o obtiene iniciara login y obtendra los datos del usuario y su carrito ya registrado
   console.log(Token);
-  console.log(cart);
-  console.log(dateuser);
+  console.log(Product);
   //usuario de prueba esta en mongo, pass :"hola"
   return (
     <Portcontext.Provider value={{ cart }}>{children}</Portcontext.Provider>
