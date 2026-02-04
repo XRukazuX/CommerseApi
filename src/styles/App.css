@@ -5,6 +5,14 @@
   flex-direction: column;
   align-items: center;
 }
+.local {
+  width: 100vw;
+  height: 50vh;
+  object-fit: contain;
+  object-position: center;
+  margin: 0 auto;
+  background: linear-gradient(180deg, #0f2027, #32535e, #142d38);
+}
 /*Nav con titulo y user*/
 .Nav {
   width: 100%;
