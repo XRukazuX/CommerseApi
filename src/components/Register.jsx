@@ -10,7 +10,12 @@ function Register() {
       <button className="icons-nav" onClick={handleShow}>
         <GrUserAdd />
       </button>
-      <Offcanvas show={show} onHide={handleClose} placement="end">
+      <Offcanvas
+        className="canvas"
+        show={show}
+        onHide={handleClose}
+        placement="end"
+      >
         <Offcanvas.Header closeButton>
           <Offcanvas.Title>Registro</Offcanvas.Title>
         </Offcanvas.Header>

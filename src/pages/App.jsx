@@ -7,21 +7,30 @@ import Local2 from "../assets/Local2.png";
 //Boostrap componente
 import Card from "react-bootstrap/Card";
 function App() {
-  const { Product } = useContext(Portcontext);
+  const { Product, Compra } = useContext(Portcontext);
   console.log("Producto", Product);
+
   return (
     <>
-      <Nav />
-      <picture>
-        <source srcSet={Local2} media="(min-width: 600px)" />
-        <img src={Local} alt="Imagen del local" className="local" />
-      </picture>
       <div className="conteiner">
+        <Nav />
+        <picture>
+          <source srcSet={Local2} media="(min-width: 600px)" />
+          <img src={Local} alt="Imagen del local" className="local" />
+        </picture>
         <div className="Product">
           {Product.map((product, index) => {
             return (
-              <Card style={{ width: "18rem" }} key={index}>
-                <Card.Img variant="top" src={product.imagen} />
+              <Card
+                style={{ width: "18rem" }}
+                key={index}
+                onClick={() => Compra(product)}
+              >
+                <Card.Img
+                  variant="top"
+                  src={product.imagen}
+                  className="card-imagen"
+                />
                 <Card.Body>
                   <Card.Title>{product.nombre}</Card.Title>
                   <Card.Subtitle className="mb-2 text-muted">
@@ -29,6 +38,7 @@ function App() {
                   </Card.Subtitle>
                   <Card.Text>{product.descripcion}</Card.Text>
                 </Card.Body>
+                <section className="action">+</section>
               </Card>
             );
           })}

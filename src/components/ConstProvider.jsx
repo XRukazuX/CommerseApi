@@ -16,15 +16,15 @@ function ConstProvider({ children }) {
   const Compra = (product) => {
     //Se Comprueba que el contenido no este ya en la lista
     setCart((cart) => {
-      const existe = cart.find((p) => p.id === product.id);
+      const existe = cart.find((p) => p._id === product._id);
 
       if (existe) {
         return cart.map((p) =>
-          p.id === product.id
+          p._id === product._id
             ? {
                 ...p,
                 cantidad: p.cantidad + 1,
-                subtotal: (p.cantidad + 1) * p.price,
+                subtotal: (p.cantidad + 1) * p.costo,
               }
             : p,
         );
@@ -33,15 +33,15 @@ function ConstProvider({ children }) {
       return [
         ...cart,
         {
-          ...producto,
+          ...product,
           cantidad: 1,
-          subtotal: producto.price,
+          subtotal: product.costo,
         },
       ];
     });
   };
   const eliminarProducto = (id) => {
-    setCart((cart) => cart.filter((p) => p.id !== id));
+    setCart((cart) => cart.filter((p) => p._id !== id));
   };
   const quitarProducto = (id) => {
     setCart((cart) =>
@@ -112,7 +112,7 @@ function ConstProvider({ children }) {
       .then((res) => setProduct(res.data))
       .catch((error) => console.log(error));
     if (localStorage.getItem("token")) {
-      setToken(localStorage.getItem("token"));
+      setToken(localStorage.getItem("Token"));
     }
   }, []); //Obteniendo Productos
   useEffect(() => {
@@ -136,9 +136,10 @@ function ConstProvider({ children }) {
       });
   }, [Token]); // Si se tiene token o obtiene iniciara login y obtendra los datos del usuario y su carrito ya registrado
   console.log(Token);
+  console.log("Bolsa", cart);
   //usuario de prueba esta en mongo, pass :"hola"
   return (
-    <Portcontext.Provider value={{ cart, Product }}>
+    <Portcontext.Provider value={{ cart, Product, Compra }}>
       {children}
     </Portcontext.Provider>
   );
