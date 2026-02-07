@@ -47,17 +47,22 @@ function ConstProvider({ children }) {
     setCart((cart) =>
       cart
         .map((p) =>
-          p.id === id
+          p._id === id
             ? {
                 ...p,
                 cantidad: p.cantidad - 1,
-                subtotal: (p.cantidad - 1) * p.price,
+                subtotal: (p.cantidad - 1) * p.costo,
               }
             : p,
         )
         .filter((p) => p.cantidad > 0),
     );
   };
+  const total = useMemo(
+    () => parseFloat(cart.reduce((acc, p) => acc + p.subtotal, 0).toFixed(2)),
+    [cart],
+  );
+  console.log(total);
   const handleRegister = async () => {
     if (!register.username || !register.email || !register.password) {
       console.log("Faltan datos");
@@ -106,6 +111,36 @@ function ConstProvider({ children }) {
       setCart([]);
     }
   };
+  function mergeCarts(localCart, serverCart) {
+    // Creamos una copia del carrito local
+    const mergedCart = [...localCart];
+
+    serverCart.forEach((serverItem) => {
+      // Buscamos si ya existe en el carrito local
+      const existingIndex = mergedCart.findIndex(
+        (p) => p._id === serverItem._id,
+      );
+
+      if (existingIndex !== -1) {
+        // Si existe, sumamos cantidades y recalculamos subtotal
+        mergedCart[existingIndex].cantidad += serverItem.cantidad;
+        mergedCart[existingIndex].subtotal =
+          mergedCart[existingIndex].cantidad * mergedCart[existingIndex].costo;
+      } else {
+        // Si no existe, lo agregamos tal cual
+        mergedCart.push(serverItem);
+      }
+    });
+
+    return mergedCart;
+  } //crea un cart unico entre el cart local y el que saldra del api poner las variables dadas
+  useEffect(() => {
+    if (cart.length > 0) {
+      localStorage.setItem("Carrito", JSON.stringify(cart));
+    } else if (cart.length == 0) {
+      localStorage.removeItem("Carrito");
+    }
+  }, [cart]);
   useEffect(() => {
     axios
       .get("https://apicommerce.onrender.com/api/product")
@@ -126,7 +161,11 @@ function ConstProvider({ children }) {
       })
       .then((res) => {
         setDateUser(res.data.user); // si quieres guardar los datos del usuario
-        setCart(res.data.user.cart);
+        // carrito del backend
+        const serverCart = res.data.user.cart || [];
+
+        // hacemos merge con el cart actual (offline)
+        setCart((cart) => mergeCarts(cart, serverCart));
       })
       .catch((err) => {
         console.error(
@@ -134,12 +173,15 @@ function ConstProvider({ children }) {
           err.response?.data || err.message,
         );
       });
-  }, [Token]); // Si se tiene token o obtiene iniciara login y obtendra los datos del usuario y su carrito ya registrado
+  }, [Token]); // Si se tiene token o obtiene iniciara login y obtendra los datos del usuario y su carrito ya registrado.
+
   console.log(Token);
   console.log("Bolsa", cart);
   //usuario de prueba esta en mongo, pass :"hola"
   return (
-    <Portcontext.Provider value={{ cart, Product, Compra }}>
+    <Portcontext.Provider
+      value={{ cart, Product, Compra, eliminarProducto, quitarProducto }}
+    >
       {children}
     </Portcontext.Provider>
   );
