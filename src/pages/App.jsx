@@ -8,8 +8,6 @@ import Local2 from "../assets/Local2.png";
 import Card from "react-bootstrap/Card";
 function App() {
   const { Product, Compra } = useContext(Portcontext);
-  console.log("Producto", Product);
-
   return (
     <>
       <div className="conteiner">
@@ -36,7 +34,7 @@ function App() {
                   <Card.Subtitle className="mb-2 text-muted">
                     {`${product.costo} $`}
                   </Card.Subtitle>
-                  <Card.Text>{product.descripcion}</Card.Text>
+                  <Card.Text id="detail">{product.descripcion}</Card.Text>
                 </Card.Body>
                 <section className="action">+</section>
               </Card>

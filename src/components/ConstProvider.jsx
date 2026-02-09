@@ -13,6 +13,15 @@ function ConstProvider({ children }) {
   });
   const [user, setUser] = useState({ email: "", password: "" });
   const [cart, setCart] = useState([]);
+  //Para cambiar cualquier dato en register
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setRegister((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+  //Funciones para acciones de compra
   const Compra = (product) => {
     //Se Comprueba que el contenido no este ya en la lista
     setCart((cart) => {
@@ -62,7 +71,31 @@ function ConstProvider({ children }) {
     () => parseFloat(cart.reduce((acc, p) => acc + p.subtotal, 0).toFixed(2)),
     [cart],
   );
-  console.log(total);
+  function mergeCarts(localCart, serverCart) {
+    // Creamos una copia del carrito local
+    const mergedCart = [...localCart];
+
+    serverCart.forEach((serverItem) => {
+      // Buscamos si ya existe en el carrito local
+      const existingIndex = mergedCart.findIndex(
+        (p) => p._id === serverItem._id,
+      );
+
+      if (existingIndex !== -1) {
+        // Si existe, sumamos cantidades y recalculamos subtotal
+        mergedCart[existingIndex].cantidad += serverItem.cantidad;
+        mergedCart[existingIndex].subtotal =
+          mergedCart[existingIndex].cantidad * mergedCart[existingIndex].costo;
+      } else {
+        // Si no existe, lo agregamos tal cual
+        mergedCart.push(serverItem);
+      }
+    });
+
+    return mergedCart;
+  } //crea un cart unico entre el cart local y el que saldra del api poner las variables dadas
+  //console.log(total);
+  //Acciones para registro y login
   const handleRegister = async () => {
     if (!register.username || !register.email || !register.password) {
       console.log("Faltan datos");
@@ -111,29 +144,7 @@ function ConstProvider({ children }) {
       setCart([]);
     }
   };
-  function mergeCarts(localCart, serverCart) {
-    // Creamos una copia del carrito local
-    const mergedCart = [...localCart];
-
-    serverCart.forEach((serverItem) => {
-      // Buscamos si ya existe en el carrito local
-      const existingIndex = mergedCart.findIndex(
-        (p) => p._id === serverItem._id,
-      );
-
-      if (existingIndex !== -1) {
-        // Si existe, sumamos cantidades y recalculamos subtotal
-        mergedCart[existingIndex].cantidad += serverItem.cantidad;
-        mergedCart[existingIndex].subtotal =
-          mergedCart[existingIndex].cantidad * mergedCart[existingIndex].costo;
-      } else {
-        // Si no existe, lo agregamos tal cual
-        mergedCart.push(serverItem);
-      }
-    });
-
-    return mergedCart;
-  } //crea un cart unico entre el cart local y el que saldra del api poner las variables dadas
+  //efecto para guardar en local store
   useEffect(() => {
     if (cart.length > 0) {
       localStorage.setItem("Carrito", JSON.stringify(cart));
@@ -175,12 +186,20 @@ function ConstProvider({ children }) {
       });
   }, [Token]); // Si se tiene token o obtiene iniciara login y obtendra los datos del usuario y su carrito ya registrado.
 
-  console.log(Token);
-  console.log("Bolsa", cart);
+  //console.log("Bolsa", cart);
+  //console.log("Datos de Registro", register);
   //usuario de prueba esta en mongo, pass :"hola"
   return (
     <Portcontext.Provider
-      value={{ cart, Product, Compra, eliminarProducto, quitarProducto }}
+      value={{
+        cart,
+        Product,
+        Compra,
+        eliminarProducto,
+        quitarProducto,
+        handleChange,
+        register,
+      }}
     >
       {children}
     </Portcontext.Provider>
