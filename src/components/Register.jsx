@@ -1,9 +1,10 @@
 import Offcanvas from "react-bootstrap/Offcanvas";
-import { useState } from "react";
+import Button from "react-bootstrap/Button";
 import { GrUserAdd } from "react-icons/gr";
 //Direcciones para el providers
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { Portcontext } from "./Portcontext";
+import "../styles/Register.css";
 function Register() {
   const { handleChange, register } = useContext(Portcontext);
   const [show, setShow] = useState(false);
@@ -28,44 +29,57 @@ function Register() {
           <Offcanvas.Title>Registro</Offcanvas.Title>
         </Offcanvas.Header>
         <Offcanvas.Body>
-          <div>
-            <form onSubmit={handleSubmit} id="Formulario">
-              <div>
-                <section>
-                  <label>Nombre:</label>
-                  <input
-                    type="text"
-                    name="username"
-                    placeholder="Nombre"
-                    value={register.username}
-                    onChange={handleChange}
-                    required
-                  />
-                </section>
-                <section>
-                  <label>Email:</label>
-                  <input
-                    type="email"
-                    name="email"
-                    placeholder="Email: xxxx@gmail.com"
-                    value={register.email}
-                    onChange={handleChange}
-                    required
-                  />
-                </section>
-                <section>
-                  <label>Contraseña:</label>
-                  <input
-                    type="password"
-                    name="password"
-                    placeholder="Contraseña"
-                    value={register.password}
-                    onChange={handleChange}
-                    required
-                  />
-                </section>
-              </div>
-              <button type="submit">Enviar</button>
+          <div id="conteiner-form">
+            <form onSubmit={handleSubmit} id="Formulario" autoComplete="off">
+              <section>
+                <label htmlFor="username">Nombre:</label>
+                <input
+                  type="text"
+                  id="username"
+                  name="username"
+                  autoComplete="off"
+                  placeholder="Nombre"
+                  maxLength="10"
+                  value={register.username}
+                  onChange={handleChange}
+                  required
+                />
+              </section>
+
+              <section>
+                <label htmlFor="email">Email:</label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  autoComplete="off"
+                  placeholder="Email"
+                  maxLength="30"
+                  value={register.email}
+                  onChange={handleChange}
+                  required
+                />
+              </section>
+
+              <section>
+                <label htmlFor="password">Contraseña:</label>
+                <input
+                  type="password"
+                  id="password"
+                  name="password"
+                  autoComplete="off"
+                  maxLength="15"
+                  minLength="4"
+                  placeholder="Contraseña (min:4 caracteres)"
+                  value={register.password}
+                  onChange={handleChange}
+                  required
+                />
+              </section>
+
+              <Button variant="outline-primary" type="submit">
+                Primary
+              </Button>
             </form>
           </div>
         </Offcanvas.Body>

@@ -64,14 +64,14 @@ button {
   background: aqua;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
-  grid-template-rows: 25rem;
+  grid-template-rows: 28rem;
   gap: 1rem;
   padding: 1rem;
   justify-content: center;
   align-items: center;
 }
 .card {
-  height: 25rem;
+  height: 28rem;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
@@ -90,8 +90,8 @@ button {
 #detail {
   width: 100%;
 }
-.cardcard-title,
-.card-title {
+.card .card-title,
+.card-subtitle {
   text-align: center;
 }
 .action {
