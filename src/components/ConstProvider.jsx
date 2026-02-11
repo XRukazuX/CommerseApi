@@ -101,15 +101,21 @@ function ConstProvider({ children }) {
       console.log("Faltan datos");
       return;
     }
-
+    setLoading(true);
     try {
       const res = await axios.post(
         "https://apicommerce.onrender.com/api/register",
         register,
       );
-
       console.log(res.data);
+      setLoading(false);
+      setRegister({
+        username: "",
+        email: "",
+        password: "",
+      });
     } catch (error) {
+      setLoading("El usuario ya existe");
       console.error("Error POST:", error.response?.data || error.message);
     }
   }; //Colocar en un boton y solo cargar los datos si existen las cosas de register
@@ -199,6 +205,8 @@ function ConstProvider({ children }) {
         quitarProducto,
         handleChange,
         register,
+        handleRegister,
+        loading,
       }}
     >
       {children}

@@ -1,30 +1,48 @@
 import Offcanvas from "react-bootstrap/Offcanvas";
 import Button from "react-bootstrap/Button";
+import Spinner from "react-bootstrap/Spinner";
 import { GrUserAdd } from "react-icons/gr";
 //Direcciones para el providers
 import { useContext, useState } from "react";
 import { Portcontext } from "./Portcontext";
 import "../styles/Register.css";
 function Register() {
-  const { handleChange, register } = useContext(Portcontext);
+  const { handleChange, register, handleRegister, loading } =
+    useContext(Portcontext);
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Datos recogidos por el formulario", register);
+    handleRegister();
   };
+  const calcularSeguridad = (password) => {
+    let puntos = 0;
+
+    if (!password) return 0;
+
+    // Tiene minúsculas
+    if (/[a-z]/.test(password)) puntos += 25;
+
+    // Tiene mayúsculas
+    if (/[A-Z]/.test(password)) puntos += 25;
+
+    // Tiene números
+    if (/[0-9]/.test(password)) puntos += 25;
+
+    // Longitud mínima para maxima
+    if (password.length >= 6) puntos += 25;
+
+    return puntos;
+  };
+  const seguridad = calcularSeguridad(register.password);
   return (
     <>
       <button className="icons-nav" onClick={handleShow}>
         <GrUserAdd />
       </button>
-      <Offcanvas
-        className="canvas"
-        show={show}
-        onHide={handleClose}
-        placement="end"
-      >
+      <Offcanvas id="canvas" show={show} onHide={handleClose} placement="end">
         <Offcanvas.Header closeButton>
           <Offcanvas.Title>Registro</Offcanvas.Title>
         </Offcanvas.Header>
@@ -70,16 +88,96 @@ function Register() {
                   autoComplete="off"
                   maxLength="15"
                   minLength="4"
-                  placeholder="Contraseña (min:4 caracteres)"
+                  placeholder="Contraseña (Min: 4 caracteres)"
                   value={register.password}
                   onChange={handleChange}
                   required
                 />
+                {seguridad > 0 && (
+                  <>
+                    <input
+                      type="range"
+                      name="segurity"
+                      id="segurity"
+                      min="0"
+                      max="100"
+                      readOnly
+                      value={calcularSeguridad(register.password)}
+                      style={{
+                        accentColor:
+                          seguridad <= 25
+                            ? "red"
+                            : seguridad <= 50
+                              ? "orange"
+                              : seguridad <= 75
+                                ? "yellow"
+                                : "green",
+                        background: `linear-gradient(to right, 
+      ${
+        seguridad <= 25
+          ? "red"
+          : seguridad <= 50
+            ? "orange"
+            : seguridad <= 75
+              ? "yellow"
+              : "green"
+      } 
+      ${seguridad}%, 
+      #ddd ${seguridad}%)`,
+                      }}
+                    />
+                    <span
+                      className="nivel"
+                      style={{
+                        background: `${
+                          seguridad <= 25
+                            ? "red"
+                            : seguridad <= 50
+                              ? "orange"
+                              : seguridad <= 75
+                                ? "yellow"
+                                : "green"
+                        } `,
+                        color: ` ${
+                          seguridad <= 25
+                            ? "white"
+                            : seguridad <= 50
+                              ? "white"
+                              : seguridad <= 75
+                                ? "black"
+                                : "white"
+                        } `,
+                      }}
+                    >{` ${
+                      seguridad <= 25
+                        ? "Insegura"
+                        : seguridad <= 50
+                          ? "Débil"
+                          : seguridad <= 75
+                            ? "Buena"
+                            : "Fuerte"
+                    } `}</span>
+                  </>
+                )}
               </section>
 
               <Button variant="outline-primary" type="submit">
-                Primary
+                Enviar
               </Button>
+              {loading ? (
+                <Button variant="primary" disabled>
+                  <Spinner
+                    as="span"
+                    animation="grow"
+                    size="sm"
+                    role="status"
+                    aria-hidden="true"
+                  />
+                  {loading !== true ? loading : "Cargando ..."}
+                </Button>
+              ) : (
+                ""
+              )}
             </form>
           </div>
         </Offcanvas.Body>
