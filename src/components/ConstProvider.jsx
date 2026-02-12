@@ -3,6 +3,7 @@ import { useState, useEffect, useMemo } from "react";
 import { Portcontext } from "./Portcontext";
 function ConstProvider({ children }) {
   const [loading, setLoading] = useState(false);
+  const [loadinglogin, setLoadinglogin] = useState(false);
   const [Product, setProduct] = useState([]); //Constante donde se guardara los datos de product
   const [dateuser, setDateUser] = useState({});
   const [Token, setToken] = useState(""); //Cuando obtenga un token este se guardara aqui
@@ -17,6 +18,13 @@ function ConstProvider({ children }) {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setRegister((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+  const handleChangelogin = (e) => {
+    const { name, value } = e.target;
+    setUser((prev) => ({
       ...prev,
       [name]: value,
     }));
@@ -124,22 +132,25 @@ function ConstProvider({ children }) {
       console.log("Faltan datos");
       return;
     }
-
+    setLoadinglogin(true);
     try {
       const res = await axios.post(
         "https://apicommerce.onrender.com/api/login",
         user,
       );
 
-      console.log(res.data);
+      console.log(res.data.message);
       const token = res.data.token; // 👈 depende del backend
       setToken(token);
-
+      setLoadinglogin(false);
+      setUser({ email: "", password: "" });
       // opcional: persistir
       localStorage.setItem("Token", token);
       console.log("Login OK, token guardado");
     } catch (error) {
+      setLoadinglogin("Error de Email o Contraseña");
       console.error("Error POST:", error.response?.data || error.message);
+      console.log(loadinglogin);
     }
   }; //Colocar en un boton y solo cargar los datos si existen las cosas de register
   const loginOff = () => {
@@ -151,19 +162,19 @@ function ConstProvider({ children }) {
     }
   };
   //efecto para guardar en local store
-  useEffect(() => {
+  /*useEffect(() => {
     if (cart.length > 0) {
       localStorage.setItem("Carrito", JSON.stringify(cart));
     } else if (cart.length == 0) {
       localStorage.removeItem("Carrito");
     }
-  }, [cart]);
+  }, [cart]);*/
   useEffect(() => {
     axios
       .get("https://apicommerce.onrender.com/api/product")
       .then((res) => setProduct(res.data))
       .catch((error) => console.log(error));
-    if (localStorage.getItem("token")) {
+    if (localStorage.getItem("Token")) {
       setToken(localStorage.getItem("Token"));
     }
   }, []); //Obteniendo Productos
@@ -189,15 +200,18 @@ function ConstProvider({ children }) {
           "Error al obtener perfil:",
           err.response?.data || err.message,
         );
+        localStorage.removeItem("Token");
+        setToken("");
+        setDateUser({});
       });
   }, [Token]); // Si se tiene token o obtiene iniciara login y obtendra los datos del usuario y su carrito ya registrado.
-
+  console.log(dateuser);
   //console.log("Bolsa", cart);
-  //console.log("Datos de Registro", register);
   //usuario de prueba esta en mongo, pass :"hola"
   return (
     <Portcontext.Provider
       value={{
+        dateuser,
         cart,
         Product,
         Compra,
@@ -207,6 +221,10 @@ function ConstProvider({ children }) {
         register,
         handleRegister,
         loading,
+        handleChangelogin,
+        user,
+        login,
+        loadinglogin,
       }}
     >
       {children}

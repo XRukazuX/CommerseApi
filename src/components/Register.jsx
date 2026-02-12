@@ -2,11 +2,15 @@ import Offcanvas from "react-bootstrap/Offcanvas";
 import Button from "react-bootstrap/Button";
 import Spinner from "react-bootstrap/Spinner";
 import { GrUserAdd } from "react-icons/gr";
+import { FaEye } from "react-icons/fa";
+import { FaEyeSlash } from "react-icons/fa";
+
 //Direcciones para el providers
 import { useContext, useState } from "react";
 import { Portcontext } from "./Portcontext";
 import "../styles/Register.css";
 function Register() {
+  const [eye, setEye] = useState(true);
   const { handleChange, register, handleRegister, loading } =
     useContext(Portcontext);
   const [show, setShow] = useState(false);
@@ -46,7 +50,7 @@ function Register() {
         <Offcanvas.Header closeButton>
           <Offcanvas.Title>Registro</Offcanvas.Title>
         </Offcanvas.Header>
-        <Offcanvas.Body>
+        <Offcanvas.Body className="canvasbody">
           <div id="conteiner-form">
             <form onSubmit={handleSubmit} id="Formulario" autoComplete="off">
               <section>
@@ -79,10 +83,10 @@ function Register() {
                 />
               </section>
 
-              <section>
+              <section className="visible">
                 <label htmlFor="password">Contraseña:</label>
                 <input
-                  type="password"
+                  type={eye ? "text" : "password"}
                   id="password"
                   name="password"
                   autoComplete="off"
@@ -93,26 +97,33 @@ function Register() {
                   onChange={handleChange}
                   required
                 />
-                {seguridad > 0 && (
-                  <>
-                    <input
-                      type="range"
-                      name="segurity"
-                      id="segurity"
-                      min="0"
-                      max="100"
-                      readOnly
-                      value={calcularSeguridad(register.password)}
-                      style={{
-                        accentColor:
-                          seguridad <= 25
-                            ? "red"
-                            : seguridad <= 50
-                              ? "orange"
-                              : seguridad <= 75
-                                ? "yellow"
-                                : "green",
-                        background: `linear-gradient(to right, 
+
+                {eye ? (
+                  <FaEye onClick={() => setEye(!eye)} className="eyes" />
+                ) : (
+                  <FaEyeSlash onClick={() => setEye(!eye)} className="eyes" />
+                )}
+              </section>
+              {seguridad > 0 && (
+                <>
+                  <input
+                    type="range"
+                    name="segurity"
+                    id="segurity"
+                    min="0"
+                    max="100"
+                    readOnly
+                    value={calcularSeguridad(register.password)}
+                    style={{
+                      accentColor:
+                        seguridad <= 25
+                          ? "red"
+                          : seguridad <= 50
+                            ? "orange"
+                            : seguridad <= 75
+                              ? "yellow"
+                              : "green",
+                      background: `linear-gradient(to right, 
       ${
         seguridad <= 25
           ? "red"
@@ -124,48 +135,46 @@ function Register() {
       } 
       ${seguridad}%, 
       #ddd ${seguridad}%)`,
-                      }}
-                    />
-                    <span
-                      className="nivel"
-                      style={{
-                        background: `${
-                          seguridad <= 25
-                            ? "red"
-                            : seguridad <= 50
-                              ? "orange"
-                              : seguridad <= 75
-                                ? "yellow"
-                                : "green"
-                        } `,
-                        color: ` ${
-                          seguridad <= 25
+                    }}
+                  />
+                  <span
+                    className="nivel"
+                    style={{
+                      background: `${
+                        seguridad <= 25
+                          ? "red"
+                          : seguridad <= 50
+                            ? "orange"
+                            : seguridad <= 75
+                              ? "yellow"
+                              : "green"
+                      } `,
+                      color: ` ${
+                        seguridad <= 25
+                          ? "white"
+                          : seguridad <= 50
                             ? "white"
-                            : seguridad <= 50
-                              ? "white"
-                              : seguridad <= 75
-                                ? "black"
-                                : "white"
-                        } `,
-                      }}
-                    >{` ${
-                      seguridad <= 25
-                        ? "Insegura"
-                        : seguridad <= 50
-                          ? "Débil"
-                          : seguridad <= 75
-                            ? "Buena"
-                            : "Fuerte"
-                    } `}</span>
-                  </>
-                )}
-              </section>
-
-              <Button variant="outline-primary" type="submit">
+                            : seguridad <= 75
+                              ? "black"
+                              : "white"
+                      } `,
+                    }}
+                  >{` ${
+                    seguridad <= 25
+                      ? "Insegura"
+                      : seguridad <= 50
+                        ? "Débil"
+                        : seguridad <= 75
+                          ? "Buena"
+                          : "Fuerte"
+                  } `}</span>
+                </>
+              )}
+              <Button variant="outline-light" type="submit">
                 Enviar
               </Button>
               {loading ? (
-                <Button variant="primary" disabled>
+                <Button variant="secondary" disabled>
                   <Spinner
                     as="span"
                     animation="grow"
