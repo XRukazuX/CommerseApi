@@ -81,4 +81,5 @@ input::placeholder {
   inset: 0;
   top: 60%;
   left: 90%;
+  z-index: 3;
 }

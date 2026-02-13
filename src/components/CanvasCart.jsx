@@ -8,20 +8,41 @@ import Card from "react-bootstrap/Card";
 import Offcanvas from "react-bootstrap/Offcanvas";
 import Button from "react-bootstrap/Button";
 function Canvascart({ prop }) {
-  const { eliminarProducto, quitarProducto, Compra } = useContext(Portcontext);
+  const {
+    eliminarProducto,
+    quitarProducto,
+    Compra,
+    total,
+    handleSaveCart,
+    Token,
+    saving,
+  } = useContext(Portcontext);
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-  console.log(prop);
   return (
     <>
-      <button className="icons-nav" onClick={handleShow}>
+      <Button
+        variant="outline-primary"
+        className="icons-nav"
+        onClick={handleShow}
+      >
         <FaShoppingCart />
-        <span>{`:${prop.length}`}</span>
-      </button>
-      <Offcanvas show={show} onHide={handleClose} placement="end">
+        <span>{`: ${prop.length}`}</span>
+      </Button>
+      <Offcanvas show={show} onHide={handleClose} placement="end" id="carrito">
         <Offcanvas.Header closeButton>
           <Offcanvas.Title>Carrito</Offcanvas.Title>
+
+          {Token && (
+            <Button
+              variant="outline-success"
+              onClick={handleSaveCart}
+              disabled={saving}
+            >
+              {saving ? "Guardando..." : "Guardar carrito"}
+            </Button>
+          )}
         </Offcanvas.Header>
         <Offcanvas.Body className="cart-body">
           {prop.length == 0 ? (
@@ -66,6 +87,7 @@ function Canvascart({ prop }) {
                   </Card>
                 );
               })}
+              <Button variant="outline-success">{`Total: ${total} $`}</Button>
             </>
           )}
         </Offcanvas.Body>

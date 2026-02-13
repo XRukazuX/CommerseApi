@@ -13,7 +13,32 @@ function ConstProvider({ children }) {
     password: "",
   });
   const [user, setUser] = useState({ email: "", password: "" });
-  const [cart, setCart] = useState([]);
+  const [cart, setCart] = useState(() => {
+    const savedCart = localStorage.getItem("Carrito");
+    return savedCart ? JSON.parse(savedCart) : [];
+  });
+  const saveCartToBackend = async (updatedCart) => {
+    if (!Token) return;
+
+    try {
+      await axios.post(
+        "https://apicommerce.onrender.com/api/cart",
+        { cart: updatedCart },
+        {
+          headers: {
+            Authorization: `Bearer ${Token}`,
+          },
+        },
+      );
+      console.log("Carrito sincronizado con backend");
+    } catch (error) {
+      console.error(
+        "Error guardando carrito:",
+        error.response?.data || error.message,
+      );
+    }
+  };
+
   //Para cambiar cualquier dato en register
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -146,6 +171,7 @@ function ConstProvider({ children }) {
       setUser({ email: "", password: "" });
       // opcional: persistir
       localStorage.setItem("Token", token);
+
       console.log("Login OK, token guardado");
     } catch (error) {
       setLoadinglogin("Error de Email o Contraseña");
@@ -153,22 +179,48 @@ function ConstProvider({ children }) {
       console.log(loadinglogin);
     }
   }; //Colocar en un boton y solo cargar los datos si existen las cosas de register
-  const loginOff = () => {
-    if (Token) {
-      localStorage.removeItem("Token");
-      setRegister({ email: "", password: "" });
-      setDateUser({});
-      setCart([]);
+  const [saving, setSaving] = useState(false);
+
+  const handleSaveCart = async () => {
+    if (!Token) return;
+    setSaving(true);
+    try {
+      await saveCartToBackend(cart);
+      console.log("Carrito guardado en el servidor ✅");
+    } catch {
+      console.log("No se pudo guardar el carrito 😢");
+    } finally {
+      setSaving(false);
     }
   };
-  //efecto para guardar en local store
-  /*useEffect(() => {
-    if (cart.length > 0) {
-      localStorage.setItem("Carrito", JSON.stringify(cart));
-    } else if (cart.length == 0) {
-      localStorage.removeItem("Carrito");
+
+  const loginOff = async () => {
+    if (!Token) return;
+
+    try {
+      // Intentamos guardar el carrito actual en el backend
+      await saveCartToBackend(cart);
+      console.log("Carrito guardado antes de cerrar sesión");
+    } catch (error) {
+      console.error(
+        "No se pudo guardar el carrito antes de cerrar sesión:",
+        error,
+      );
+      // Aquí puedes decidir: ¿cerrar sesión de todos modos o abortar?
+      // En este ejemplo, seguimos limpiando aunque falle la sincronización
+    } finally {
+      // Limpiamos estado y token
+      localStorage.removeItem("Token");
+      setToken("");
+      setRegister({ email: "", password: "" });
+      setDateUser({});
+      console.log("Usuario deslogueado");
     }
-  }, [cart]);*/
+  };
+
+  useEffect(() => {
+    localStorage.setItem("Carrito", JSON.stringify(cart));
+  }, [cart]);
   useEffect(() => {
     axios
       .get("https://apicommerce.onrender.com/api/product")
@@ -193,7 +245,16 @@ function ConstProvider({ children }) {
         const serverCart = res.data.user.cart || [];
 
         // hacemos merge con el cart actual (offline)
-        setCart((cart) => mergeCarts(cart, serverCart));
+        setCart((prevCart) => {
+          const merged = mergeCarts(prevCart, serverCart);
+
+          // 🔥 Guardamos UNA sola vez después del merge
+          if (JSON.stringify(prevCart) !== JSON.stringify(merged)) {
+            saveCartToBackend(merged);
+          }
+
+          return merged;
+        });
       })
       .catch((err) => {
         console.error(
@@ -205,9 +266,6 @@ function ConstProvider({ children }) {
         setDateUser({});
       });
   }, [Token]); // Si se tiene token o obtiene iniciara login y obtendra los datos del usuario y su carrito ya registrado.
-  console.log(dateuser);
-  //console.log("Bolsa", cart);
-  //usuario de prueba esta en mongo, pass :"hola"
   return (
     <Portcontext.Provider
       value={{
@@ -225,6 +283,11 @@ function ConstProvider({ children }) {
         user,
         login,
         loadinglogin,
+        loginOff,
+        total,
+        handleSaveCart,
+        Token,
+        saving,
       }}
     >
       {children}

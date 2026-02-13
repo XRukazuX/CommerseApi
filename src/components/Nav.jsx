@@ -9,8 +9,7 @@ import Canvascart from "./CanvasCart";
 import Register from "./Register";
 import Login from "./Login";
 function Nav() {
-  const { cart, dateuser } = useContext(Portcontext);
-  console.log("datos:", dateuser);
+  const { cart, dateuser, loginOff } = useContext(Portcontext);
   return (
     <div className="Nav">
       <h3 className="title">
@@ -20,9 +19,14 @@ function Nav() {
         <Canvascart prop={cart} />
         {dateuser?.username ? (
           <>
-            <Button variant="outline-success" className="icons-nav">
+            <Button
+              variant="outline-success"
+              className="icons-nav"
+              id="Usuario"
+              onClick={loginOff}
+            >
               <FaRegUserCircle />
-              <span>{`  ${dateuser.username} `}</span>
+              <span>{`${dateuser.username} `}</span>
               <FaPowerOff />
             </Button>
           </>

@@ -43,9 +43,13 @@ function Register() {
   const seguridad = calcularSeguridad(register.password);
   return (
     <>
-      <button className="icons-nav" onClick={handleShow}>
+      <Button
+        variant="outline-primary"
+        className="icons-nav"
+        onClick={handleShow}
+      >
         <GrUserAdd />
-      </button>
+      </Button>
       <Offcanvas id="canvas" show={show} onHide={handleClose} placement="end">
         <Offcanvas.Header closeButton>
           <Offcanvas.Title>Registro</Offcanvas.Title>

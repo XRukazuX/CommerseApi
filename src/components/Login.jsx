@@ -21,9 +21,13 @@ function Login() {
 
   return (
     <>
-      <button className="icons-nav" onClick={handleShow}>
+      <Button
+        variant="outline-primary"
+        className="icons-nav"
+        onClick={handleShow}
+      >
         <GrUser />
-      </button>
+      </Button>
       <Offcanvas id="canvas" show={show} onHide={handleClose} placement="end">
         <Offcanvas.Header closeButton>
           <Offcanvas.Title>Login</Offcanvas.Title>

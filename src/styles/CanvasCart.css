@@ -40,9 +40,24 @@
   left: 15rem;
   border-radius: 100%;
   border: black 0.1rem solid;
+  z-index: 3;
 }
 
 .Eliminar:hover {
   background: black;
   color: white;
+}
+
+.offcanvas-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+@media (width<=600px) {
+  #carrito {
+    width: 100vw;
+  }
 }
