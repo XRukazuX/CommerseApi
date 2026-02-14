@@ -3,6 +3,7 @@ import { useState, useEffect, useMemo } from "react";
 import { Portcontext } from "./Portcontext";
 function ConstProvider({ children }) {
   const [loading, setLoading] = useState(false);
+  const [newProd, setNewProd] = useState(false);
   const [loadinglogin, setLoadinglogin] = useState(false);
   const [Product, setProduct] = useState([]); //Constante donde se guardara los datos de product
   const [dateuser, setDateUser] = useState({});
@@ -11,6 +12,12 @@ function ConstProvider({ children }) {
     username: "",
     email: "",
     password: "",
+  });
+  const [addproduct, setAddproduct] = useState({
+    nombre: "",
+    costo: 0,
+    descripcion: "",
+    imagen: "",
   });
   const [user, setUser] = useState({ email: "", password: "" });
   const [cart, setCart] = useState(() => {
@@ -38,7 +45,9 @@ function ConstProvider({ children }) {
       );
     }
   };
-
+  const closenewproduct = () => {
+    setNewProd(!newProd);
+  };
   //Para cambiar cualquier dato en register
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -52,6 +61,13 @@ function ConstProvider({ children }) {
     setUser((prev) => ({
       ...prev,
       [name]: value,
+    }));
+  };
+  const handleChangeprod = (e) => {
+    const { name, value } = e.target;
+    setAddproduct((prev) => ({
+      ...prev,
+      [name]: name === "costo" ? Number(value) : value,
     }));
   };
   //Funciones para acciones de compra
@@ -217,11 +233,7 @@ function ConstProvider({ children }) {
       console.log("Usuario deslogueado");
     }
   };
-
-  useEffect(() => {
-    localStorage.setItem("Carrito", JSON.stringify(cart));
-  }, [cart]);
-  useEffect(() => {
+  const addProd = () => {
     axios
       .get("https://apicommerce.onrender.com/api/product")
       .then((res) => setProduct(res.data))
@@ -229,6 +241,34 @@ function ConstProvider({ children }) {
     if (localStorage.getItem("Token")) {
       setToken(localStorage.getItem("Token"));
     }
+  };
+  const enviarProducto = async () => {
+    if (!Token) return;
+    try {
+      const response = await axios.post(
+        "https://apicommerce.onrender.com/api/newproduct", // URL de la API
+        addproduct, // datos que envías
+        {
+          headers: {
+            Authorization: `Bearer ${Token}`, // ⚡ token en header
+            "Content-Type": "application/json", // asegurarse de enviar JSON
+          },
+        },
+      );
+
+      console.log("Producto creado:", response.data);
+    } catch (error) {
+      console.error(
+        "Error al crear producto:",
+        error.response?.data || error.message,
+      );
+    }
+  };
+  useEffect(() => {
+    localStorage.setItem("Carrito", JSON.stringify(cart));
+  }, [cart]);
+  useEffect(() => {
+    addProd();
   }, []); //Obteniendo Productos
   useEffect(() => {
     if (!Token) return; // evita hacer la request sin token
@@ -288,6 +328,10 @@ function ConstProvider({ children }) {
         handleSaveCart,
         Token,
         saving,
+        newProd,
+        closenewproduct,
+        addproduct,
+        handleChangeprod,
       }}
     >
       {children}

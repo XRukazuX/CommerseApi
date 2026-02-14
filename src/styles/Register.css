@@ -1,6 +1,3 @@
-#canvas {
-  width: 100vw;
-}
 #conteiner-form {
   width: 100%;
   height: 100%;
@@ -15,7 +12,7 @@
   border-radius: 50px;
 }
 #Formulario {
-  width: clamp(320px, 25vw, 1080px);
+  width: clamp(320px, 80%, 1080px);
   height: clamp(255px, 95%, 600px);
   border-radius: 20px;
   overflow: hidden;
@@ -82,4 +79,9 @@ input::placeholder {
   top: 60%;
   left: 90%;
   z-index: 3;
+}
+@media (width <=700px) {
+  #canvas {
+    width: 100vw;
+  }
 }
