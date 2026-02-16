@@ -195,7 +195,7 @@ function ConstProvider({ children }) {
 
       console.log("Login OK, token guardado");
     } catch (error) {
-      setLoadinglogin("Error de Email o Contraseña");
+      setLoadinglogin("Datos invalidos.");
       console.error("Error POST:", error.response?.data || error.message);
       console.log(loadinglogin);
     }

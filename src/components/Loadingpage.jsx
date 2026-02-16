@@ -9,7 +9,7 @@ function LoadingPage() {
       {pageOpen ? (
         <div className="InitPage">
           <div className="LogoRay">
-            <Spinner animation="border" role="status" />
+            <Spinner className="Entrada" animation="border" role="status" />
             <span className="Ray">⚡</span>
           </div>
           <span className="aviso">
