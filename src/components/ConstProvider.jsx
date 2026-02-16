@@ -4,6 +4,7 @@ import { Portcontext } from "./Portcontext";
 function ConstProvider({ children }) {
   const [loading, setLoading] = useState(false);
   const [newProd, setNewProd] = useState(false);
+  const [newProdLoading, setNewProdLoading] = useState(false);
   const [loadinglogin, setLoadinglogin] = useState(false);
   const [Product, setProduct] = useState([]); //Constante donde se guardara los datos de product
   const [dateuser, setDateUser] = useState({});
@@ -15,7 +16,7 @@ function ConstProvider({ children }) {
   });
   const [addproduct, setAddproduct] = useState({
     nombre: "",
-    costo: 0,
+    costo: "",
     descripcion: "",
     imagen: "",
   });
@@ -244,6 +245,7 @@ function ConstProvider({ children }) {
   };
   const enviarProducto = async () => {
     if (!Token) return;
+    setNewProdLoading(true);
     try {
       const response = await axios.post(
         "https://apicommerce.onrender.com/api/newproduct", // URL de la API
@@ -255,13 +257,24 @@ function ConstProvider({ children }) {
           },
         },
       );
-
+      setProduct([]);
+      setAddproduct({
+        nombre: "",
+        costo: 0,
+        descripcion: "",
+        imagen: "",
+      });
+      setNewProd(false);
+      addProd();
       console.log("Producto creado:", response.data);
     } catch (error) {
       console.error(
         "Error al crear producto:",
         error.response?.data || error.message,
       );
+      alert("No se Pudo cargar el nuevo producto");
+    } finally {
+      setNewProdLoading(false);
     }
   };
   useEffect(() => {
@@ -332,6 +345,8 @@ function ConstProvider({ children }) {
         closenewproduct,
         addproduct,
         handleChangeprod,
+        enviarProducto,
+        newProdLoading,
       }}
     >
       {children}

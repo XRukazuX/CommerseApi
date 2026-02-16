@@ -174,7 +174,11 @@ function Register() {
                   } `}</span>
                 </>
               )}
-              <Button variant="outline-light" type="submit">
+              <Button
+                variant="outline-light"
+                type="submit"
+                disabled={loading === true}
+              >
                 Enviar
               </Button>
               {loading ? (
