@@ -1,0 +1,48 @@
+.InitPage {
+  position: fixed;
+  width: 100dvw;
+  height: 100dvh;
+  background: #1e1e2f;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 800;
+}
+.LogoRay {
+  position: relative;
+  width: 3rem;
+  aspect-ratio: 1 / 1;
+}
+.spinner-border {
+  width: 100%;
+  height: 100%;
+  color: rgb(66, 66, 143);
+}
+.Ray {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  inset: 0;
+  font-size: 2rem;
+  filter: brightness(100%);
+  animation: Rayo 2s infinite ease-in-out;
+}
+@keyframes Rayo {
+  0% {
+    filter: brightness(1) drop-shadow(0 0 0px yellow);
+  }
+  50% {
+    filter: brightness(1.1) drop-shadow(0 0 15px yellow);
+  }
+  100% {
+    filter: brightness(1) drop-shadow(0 0 0px yellow);
+  }
+}
+.aviso {
+  width: clamp(350px, 50%, 1080px);
+  text-align: center;
+  margin-top: 1rem;
+  color: white;
+}

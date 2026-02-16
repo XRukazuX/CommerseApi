@@ -6,7 +6,7 @@ import Local2 from "../assets/Local2.png";
 //Boostrap componente
 import Product from "../components/Product";
 import PostNewProduct from "../components/PostNewProduct";
-
+import LoadingPage from "../components/Loadingpage";
 function App() {
   return (
     <>
@@ -19,6 +19,7 @@ function App() {
         <Product />
         <FooterVolt />
         <PostNewProduct />
+        <LoadingPage />
       </div>
     </>
   );

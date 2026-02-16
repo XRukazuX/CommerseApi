@@ -3,9 +3,13 @@ import { useState, useEffect, useMemo } from "react";
 import { Portcontext } from "./Portcontext";
 function ConstProvider({ children }) {
   const [loading, setLoading] = useState(false);
+  const [pageOpen, setPageOpen] = useState(true);
   const [newProd, setNewProd] = useState(false);
   const [newProdLoading, setNewProdLoading] = useState(false);
   const [loadinglogin, setLoadinglogin] = useState(false);
+  const [pageMessage, setPageMessage] = useState(
+    "Abriendo Volt, Por favor espere un momento.",
+  );
   const [Product, setProduct] = useState([]); //Constante donde se guardara los datos de product
   const [dateuser, setDateUser] = useState({});
   const [Token, setToken] = useState(""); //Cuando obtenga un token este se guardara aqui
@@ -234,13 +238,24 @@ function ConstProvider({ children }) {
       console.log("Usuario deslogueado");
     }
   };
-  const addProd = () => {
-    axios
-      .get("https://apicommerce.onrender.com/api/product")
-      .then((res) => setProduct(res.data))
-      .catch((error) => console.log(error));
-    if (localStorage.getItem("Token")) {
-      setToken(localStorage.getItem("Token"));
+  const addProd = async () => {
+    setPageOpen(true);
+    setPageMessage("Abriendo Volt, Por favor espere un momento.");
+    try {
+      const { data } = await axios.get(
+        "https://apicommerce.onrender.com/api/product",
+      );
+
+      setProduct(data);
+      setPageOpen(false);
+      const token = localStorage.getItem("Token");
+      if (token) {
+        setToken(token);
+      }
+    } catch (error) {
+      setPageOpen(true);
+      setPageMessage("Error al Abrir la tienda.");
+      console.error(error);
     }
   };
   const enviarProducto = async () => {
@@ -319,6 +334,7 @@ function ConstProvider({ children }) {
         setDateUser({});
       });
   }, [Token]); // Si se tiene token o obtiene iniciara login y obtendra los datos del usuario y su carrito ya registrado.
+  console.log(Product);
   return (
     <Portcontext.Provider
       value={{
@@ -347,6 +363,8 @@ function ConstProvider({ children }) {
         handleChangeprod,
         enviarProducto,
         newProdLoading,
+        pageOpen,
+        pageMessage,
       }}
     >
       {children}
