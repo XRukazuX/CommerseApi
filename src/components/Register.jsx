@@ -18,7 +18,6 @@ function Register() {
   const handleShow = () => setShow(true);
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Datos recogidos por el formulario", register);
     handleRegister();
   };
   const calcularSeguridad = (password) => {

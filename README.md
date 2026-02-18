@@ -1,16 +1,80 @@
-# React + Vite
+# 🛍 CommerseApi
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Aplicación frontend desarrollada con React y Vite que consume la API ApiCommerce.
 
-Currently, two official plugins are available:
+El proyecto implementa un flujo completo de e-commerce básico con autenticación, listado de productos y carrito de compras.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## React Compiler
+## 🌐 Deploy
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Proyecto desplegado en Netlify:
 
-## Expanding the ESLint configuration
+https://voltproyect.netlify.app/
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+## 🚀 Características
+
+- Registro de usuario
+- Login con almacenamiento de token
+- Listado de productos desde API externa
+- Agregar productos al carrito
+- Eliminar productos del carrito
+- Protección de rutas privadas
+- Persistencia de sesión mediante token
+
+---
+
+## 🧱 Tecnologías utilizadas
+
+- React
+- Vite
+- Axios
+- Bootstrap
+- React Bootstrap
+
+---
+
+## 🔗 Conexión con backend
+
+Este proyecto consume la API:
+
+https://github.com/XRukazuX/ApiCommerce
+
+Toda la autenticación se maneja mediante JWT.
+
+El token se almacena en el cliente y se envía en cada petición protegida.
+
+---
+
+## 🧠 Arquitectura
+
+- Componentes reutilizables
+- Manejo de estado con hooks
+- Peticiones HTTP con Axios
+- Separación entre vistas públicas y privadas
+
+---
+
+## 🎯 Objetivo del proyecto
+
+Este proyecto fue desarrollado para demostrar:
+
+- Consumo de API REST
+- Manejo de autenticación en frontend
+- Integración completa frontend + backend
+- Flujo básico de e-commerce
+- Deploy en Netlify
+
+---
+
+## 👨‍💻 Autor
+
+Desarrollado por Lucas(XRukazuX)
+
+Proyecto educativo / portfolio.
+
+Ruta de Proyecto en Github:
+
+https://github.com/XRukazuX/CommerseApi

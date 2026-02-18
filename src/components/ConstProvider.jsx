@@ -360,7 +360,6 @@ function ConstProvider({ children }) {
         setDateUser({});
       });
   }, [Token]); // Si se tiene token o obtiene iniciara login y obtendra los datos del usuario y su carrito ya registrado.
-  console.log(Product);
   return (
     <Portcontext.Provider
       value={{

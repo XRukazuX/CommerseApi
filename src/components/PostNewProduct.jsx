@@ -12,7 +12,6 @@ function PostNewProduct() {
   } = useContext(Portcontext);
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Datos recogidos por el formulario", addproduct);
     await enviarProducto();
   };
   return (

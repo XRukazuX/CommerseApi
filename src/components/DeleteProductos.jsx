@@ -10,7 +10,6 @@ function DeleteProductos() {
     setNameprod,
     deleteProdBackend,
   } = useContext(Portcontext);
-  console.log(nameprod.nombre);
   return (
     <>
       {deleteproduct && (
