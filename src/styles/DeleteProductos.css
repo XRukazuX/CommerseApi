@@ -1,0 +1,14 @@
+.form-delete {
+  width: clamp(350px, 50%, 1080px);
+  height: clamp(350px, 30%, 720px);
+  background: gray;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  border-radius: 20px;
+  overflow: hidden;
+  color: white;
+  gap: 1rem;
+}

@@ -1,16 +1,28 @@
 import { useContext } from "react";
 import { Portcontext } from "./Portcontext";
 import Card from "react-bootstrap/Card";
+import { MdDeleteForever } from "react-icons/md";
+
 function Product() {
-  const { Product, Compra, Token, closenewproduct } = useContext(Portcontext);
+  const { Product, Compra, Token, closenewproduct, showDelete } =
+    useContext(Portcontext);
   return (
     <>
       <section className="Product-Title">
         <h3>Productos</h3>
         {Token && (
-          <button onClick={closenewproduct} id="Add" variant="outline-success">
-            +
-          </button>
+          <>
+            <button
+              onClick={closenewproduct}
+              id="Add"
+              variant="outline-success"
+            >
+              +
+            </button>
+            <button onClick={showDelete} id="Add" variant="outline-success">
+              <MdDeleteForever />
+            </button>
+          </>
         )}
       </section>
       <div className="Conteiner-Product">
@@ -27,6 +39,7 @@ function Product() {
                     variant="top"
                     src={product.imagen}
                     className="card-imagen"
+                    loading="lazy"
                   />
                   <Card.Body>
                     <Card.Title>{product.nombre}</Card.Title>

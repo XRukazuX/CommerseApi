@@ -3,6 +3,8 @@ import { useState, useEffect, useMemo } from "react";
 import { Portcontext } from "./Portcontext";
 function ConstProvider({ children }) {
   const [loading, setLoading] = useState(false);
+  const [deleteproduct, setDeleteproduct] = useState(false);
+  const [nameprod, setNameprod] = useState({ nombre: "" });
   const [pageOpen, setPageOpen] = useState(true);
   const [newProd, setNewProd] = useState(false);
   const [newProdLoading, setNewProdLoading] = useState(false);
@@ -29,6 +31,7 @@ function ConstProvider({ children }) {
     const savedCart = localStorage.getItem("Carrito");
     return savedCart ? JSON.parse(savedCart) : [];
   });
+  const showDelete = () => setDeleteproduct(!deleteproduct);
   const saveCartToBackend = async (updatedCart) => {
     if (!Token) return;
 
@@ -125,6 +128,29 @@ function ConstProvider({ children }) {
     () => parseFloat(cart.reduce((acc, p) => acc + p.subtotal, 0).toFixed(2)),
     [cart],
   );
+  const deleteProdBackend = async () => {
+    if (!Token || !nameprod) return;
+    try {
+      await axios.delete(
+        "https://apicommerce.onrender.com/api/deleteproduct",
+
+        {
+          headers: {
+            Authorization: `Bearer ${Token}`,
+          },
+          data: { nombre: nameprod.nombre },
+        },
+      );
+      console.log(`Producto '${nameprod.nombre}' eliminado ✅`);
+      addProd();
+      showDelete();
+    } catch (error) {
+      console.error("error", error.response?.data.message || error.message);
+      alert("Producto no encontrado");
+    } finally {
+      setNameprod({ nombre: "" });
+    }
+  };
   function mergeCarts(localCart, serverCart) {
     // Creamos una copia del carrito local
     const mergedCart = [...localCart];
@@ -365,6 +391,11 @@ function ConstProvider({ children }) {
         newProdLoading,
         pageOpen,
         pageMessage,
+        deleteproduct,
+        showDelete,
+        nameprod,
+        setNameprod,
+        deleteProdBackend,
       }}
     >
       {children}

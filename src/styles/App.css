@@ -147,8 +147,6 @@ button {
   text-align: center;
 }
 .action {
-  width: 100%;
-  height: 100%;
   background: linear-gradient(180deg, #0f2027, #32535e, #142d38);
   position: absolute;
   display: flex; /* 🔑 */
@@ -162,9 +160,30 @@ button {
   font-size: 4rem;
   z-index: 2;
 }
+.deteleProduct {
+  width: 2.5rem;
+  aspect-ratio: 1/1;
+  position: absolute;
+  top: calc(0% + 0.5rem);
+  left: calc(100% - 3rem);
+  border: 1px white solid;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: black;
+  background: white;
+  font-size: 1.5rem;
+  z-index: 3;
+}
+
 .card:hover .action {
   opacity: 0.7;
   cursor: pointer;
+}
+.deteleProduct:hover {
+  background: black;
+  color: white;
 }
 .anuncio {
   grid-column: 1 / -1; /* Ocupa todas las columnas del grid */
@@ -222,8 +241,8 @@ button {
   z-index: 100;
   background: white;
   inset: 0;
-  top: 2rem;
-  left: 80%;
+  top: calc(0px + 1rem);
+  left: calc(100% - 2.8rem);
   display: flex;
   justify-content: center;
   align-items: center;

@@ -7,6 +7,7 @@ import Local2 from "../assets/Local2.png";
 import Product from "../components/Product";
 import PostNewProduct from "../components/PostNewProduct";
 import LoadingPage from "../components/Loadingpage";
+import DeleteProductos from "../components/DeleteProductos";
 function App() {
   return (
     <>
@@ -20,6 +21,7 @@ function App() {
         <FooterVolt />
         <PostNewProduct />
         <LoadingPage />
+        <DeleteProductos />
       </div>
     </>
   );
