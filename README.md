@@ -69,6 +69,23 @@ Este proyecto fue desarrollado para demostrar:
 
 ---
 
+📌 Consideraciones técnicas
+
+El sistema de autenticación no implementa verificación de correo electrónico ni confirmación vía email.
+El campo email se utiliza únicamente como identificador dentro de la base de datos.
+
+No se envían correos reales ni se integró un servicio externo de mailing, ya que el objetivo del proyecto es demostrar:
+
+Implementación de autenticación con JWT
+
+Protección de rutas
+
+Manejo de usuarios en MongoDB
+
+Al tratarse de un proyecto de práctica, no se consideró necesario integrar validación real de correo electrónico.
+
+---
+
 ## 👨‍💻 Autor
 
 Desarrollado por Lucas(XRukazuX)
