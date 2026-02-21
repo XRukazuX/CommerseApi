@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { Portcontext } from "./Portcontext";
 function ConstProvider({ children }) {
   const [loading, setLoading] = useState(false);
@@ -32,27 +32,30 @@ function ConstProvider({ children }) {
     return savedCart ? JSON.parse(savedCart) : [];
   });
   const showDelete = () => setDeleteproduct(!deleteproduct);
-  const saveCartToBackend = async (updatedCart) => {
-    if (!Token) return;
+  const saveCartToBackend = useCallback(
+    async (updatedCart) => {
+      if (!Token) return;
 
-    try {
-      await axios.post(
-        "https://apicommerce.onrender.com/api/cart",
-        { cart: updatedCart },
-        {
-          headers: {
-            Authorization: `Bearer ${Token}`,
+      try {
+        await axios.post(
+          "https://apicommerce.onrender.com/api/cart",
+          { cart: updatedCart },
+          {
+            headers: {
+              Authorization: `Bearer ${Token}`,
+            },
           },
-        },
-      );
-      console.log("Carrito sincronizado con backend");
-    } catch (error) {
-      console.error(
-        "Error guardando carrito:",
-        error.response?.data || error.message,
-      );
-    }
-  };
+        );
+        console.log("Carrito sincronizado con backend");
+      } catch (error) {
+        console.error(
+          "Error guardando carrito:",
+          error.response?.data || error.message,
+        );
+      }
+    },
+    [Token],
+  );
   const closenewproduct = () => {
     setNewProd(!newProd);
   };
@@ -359,7 +362,7 @@ function ConstProvider({ children }) {
         setToken("");
         setDateUser({});
       });
-  }, [Token]); // Si se tiene token o obtiene iniciara login y obtendra los datos del usuario y su carrito ya registrado.
+  }, [Token, saveCartToBackend]); // Si se tiene token o obtiene iniciara login y obtendra los datos del usuario y su carrito ya registrado.
   return (
     <Portcontext.Provider
       value={{

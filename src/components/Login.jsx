@@ -12,7 +12,7 @@ function Login() {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-  const { handleChangelogin, user, login, loadinglogin, dateuser } =
+  const { handleChangelogin, user, login, loadinglogin } =
     useContext(Portcontext);
   const handleSubmit = async (e) => {
     e.preventDefault();
