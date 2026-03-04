@@ -12,6 +12,7 @@ function ConstProvider({ children }) {
   const [pageMessage, setPageMessage] = useState(
     "Abriendo Volt, Por favor espere un momento.",
   );
+  const [saving, setSaving] = useState(false);
   const [Product, setProduct] = useState([]); //Constante donde se guardara los datos de product
   const [dateuser, setDateUser] = useState({});
   const [Token, setToken] = useState(""); //Cuando obtenga un token este se guardara aqui
@@ -229,7 +230,6 @@ function ConstProvider({ children }) {
       console.log(loadinglogin);
     }
   }; //Colocar en un boton y solo cargar los datos si existen las cosas de register
-  const [saving, setSaving] = useState(false);
 
   const handleSaveCart = async () => {
     if (!Token) return;
@@ -283,7 +283,7 @@ function ConstProvider({ children }) {
       }
     } catch (error) {
       setPageOpen(true);
-      setPageMessage("Error al Abrir la tienda.");
+      setPageMessage("Error al Abrir la tienda. Intentar recargar la pagina.");
       console.error(error);
     }
   };
