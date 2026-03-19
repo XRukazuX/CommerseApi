@@ -6,6 +6,10 @@ El proyecto implementa un flujo completo de e-commerce básico con autenticació
 
 ---
 
+## Demo
+
+![Demo](./src/assets/Demo.gif)
+
 ## 🌐 Deploy
 
 Proyecto desplegado en Netlify:
