@@ -63,7 +63,7 @@ function Register() {
                   id="username"
                   name="username"
                   autoComplete="off"
-                  placeholder="Nombre"
+                  placeholder="Use un nombre de prueba"
                   maxLength="10"
                   value={register.username}
                   onChange={handleChange}
@@ -78,7 +78,7 @@ function Register() {
                   id="email"
                   name="email"
                   autoComplete="off"
-                  placeholder="Email"
+                  placeholder="Use un mail de prueba"
                   maxLength="30"
                   value={register.email}
                   onChange={handleChange}
