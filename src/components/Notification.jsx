@@ -4,20 +4,22 @@ export default function Notification() {
   return (
     <>
       {close && (
-        <div>
+        <div className="init-notification">
           <div className="demo-notice">
-            <h4>⚠️ Aviso de demostración</h4>
-
+            <strong>⚠️ Aviso de demostración</strong>
             <p>
               Este sitio es una demo creada únicamente con fines de prueba.
-              Utiliza un correo ficticio o de prueba y no introduzcas datos
-              personales de otras personas.
+              Utiliza un correo ficticio;
+              <strong>
+                no introduzcas datos personales, reales ni de terceros
+              </strong>
+              .
             </p>
-
             <p>
-              No utilices contraseñas reales. Las cuentas solo sirven para
-              probar el registro, inicio de sesión y carrito. No existen compras
-              ni pagos reales.
+              <strong>No utilices contraseñas reales.</strong>
+              Las cuentas solo sirven para probar el registro, inicio de sesión
+              y carrito.
+              <strong>No se realizan compras ni pagos reales.</strong>
             </p>
             <button className="entendido" onClick={() => Useclose(!close)}>
               Entendido

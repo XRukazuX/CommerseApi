@@ -3,10 +3,21 @@
   padding: 0;
   box-shadow: none;
 }
+.init-notification {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  background: wheat;
+  z-index: 700;
+}
 .demo-notice {
   width: 80%;
   font-size: 1rem;
-  margin: 0 auto;
+  color: black;
+  background: rgb(156, 155, 155);
   padding: 15px;
   border: black 2px solid;
   border-radius: 20px;
